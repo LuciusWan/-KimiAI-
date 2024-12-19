@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="element-ui/index.css">
+  <script src="./js/vue.js"></script>
+  <script src="./element-ui/index.js"></script>
+  <script src="./js/axios-0.18.0.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url("https://web-tlias-lucius.oss-cn-hangzhou.aliyuncs.com/109214864_p0_master1200.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      animation: fadeInBackground 1s ease forwards; /* 添加背景淡入动画 */
+    }
+
+    @keyframes fadeInBackground {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .login-box {
+      width: 400px;
+      background-color: rgba(255, 255, 255, 0.2); /* 降低毛玻璃特效透明度 */
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      animation: fadeInBox 1s ease forwards; /* 添加登录框淡入动画 */
+      animation-delay: 0.3s; /* 延迟0.3秒显示登录框，让背景先显示出来 */
+    }
+
+    @keyframes fadeInBox {
+      from {
+        opacity: 0;
+        transform: translateY(20px); /* 初始位置向上偏移一点 */
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0); /* 回到正常位置 */
+      }
+    }
+
+    .el-input {
+      width: 100%;
+      transition: border-color 0.3s ease; /* 输入框边框颜色变化过渡动画 */
+    }
+
+    .el-input:focus {
+      border-color: #409EFF; /* 输入框获取焦点时边框变色，这里使用Element UI的主题色之一，可替换 */
+    }
+
+    .el-button {
+      width: 48%; /* 按钮宽度调整，方便并排对齐 */
+      margin-top: 15px;
+      transition: background-color 0.3s ease, transform 0.3s ease; /* 按钮背景色和缩放变化过渡动画 */
+    }
+
+    .el-button:hover {
+      background-color: #409EFF; /* 鼠标悬停时按钮背景色改变，使用Element UI主题色，可替换 */
+      transform: scale(1.05); /* 鼠标悬停时按钮稍微放大 */
+    }
+
+    .el-button:active {
+      transform: scale(0.98); /* 按钮点击时稍微缩小，模拟按下效果 */
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between; /* 让登录和注册按钮左右对齐且平分空间 */
+    }
+
+    h2 {
+      margin-bottom: 20px; /* 标题与输入框之间增加一点间距 */
+      color: #333; /* 设置标题颜色 */
+    }
+
+    .el-form-item {
+      margin-bottom: 15px; /* 调整表单元素之间的间距 */
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+  <div class="login-box">
+    <h2 align="center">用户登录</h2>
+    <el-form :model="form" status-icon :rules="rules" ref="form">
+      <el-form-item prop="username">
+        <el-input v-model="form.username" placeholder="请输入账号" prefix-icon="el-icon-user"></el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input v-model="form.password" placeholder="请输入密码" prefix-icon="el-icon-lock" type="password"></el-input>
+      </el-form-item>
+      <el-form-item class="button-group">
+        <el-button type="primary" @click="handleLogin" :loading="loading">登录</el-button>
+        <el-button @click="goToRegister">注册</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</div>
+</body>
+
+<script>
+  new Vue({
+    el: "#app",
+    data() {
+      return {
+        form: {
+          username: "",
+          password: "",
+        },
+        rules: {
+          username: [
+            { required: true, message: "请输入账号", trigger: "blur" },
+          ],
+          password: [
+            { required: true, message: "请输入密码", trigger: "blur" },
+          ],
+        },
+        loading: false
+      };
+    },
+    methods: {
+      handleLogin() {
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.loading = true;
+            // 这里模拟一个异步登录验证，实际应用中需发送AJAX请求到后端验证账号密码等
+            setTimeout(() => {
+              this.loading = false;
+              alert("登录成功，此处可完善真正的登录逻辑");
+            }, 1500);
+          } else {
+            return false;
+          }
+        });
+      },
+      goToRegister() {
+        // 这里可以添加跳转到注册页面的逻辑，比如通过Vue Router进行路由跳转等
+        alert("跳转到注册页面，此处可完善具体跳转逻辑");
+      }
+    }
+  });
+</script>
+
+</html>

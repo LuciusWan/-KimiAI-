@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KimiAI</title>
+</head>
+
+<link rel="stylesheet" href="element-ui/index.css">
+<script src="./js/vue.js"></script>
+<script src="./element-ui/index.js"></script>
+<script src="./js/axios-0.18.0.js"></script>
+
+<body>
+    <h1 align="center">Kimi API调用测试</h1>
+    <div id="app">
+        <!--<el-table
+                :data="tableData"
+                border
+                style="width: 100%">
+            <el-table-column
+                    fixed
+                    prop="id"
+                    label="ID"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="姓名"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="gender"
+                    label="性别"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="phone"
+                    label="电话号码"
+                    width="300">
+            </el-table-column>
+            <el-table-column
+                    prop="address"
+                    label="地址"
+                    width="300">
+            </el-table-column>
+            <el-table-column
+                    prop="job"
+                    label="工作"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="100">
+                <template slot-scope="scope">
+                    <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                    <el-button type="text" size="small">编辑</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <br><br>-->
+        <el-row>
+            <el-col :span="18">
+                <el-input v-model="input" placeholder="请输入内容" style="width: 80%;"></el-input>
+            </el-col>
+            <el-col :span="6">
+                <el-button type="primary" round @click="sendRequest">发送请求</el-button>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+                <div v-if="result" style="margin-top: 20px; padding: 20px; background-color: #f5f5f5; border: 1px solid #dcdcdc;">
+                    <h3>结果：</h3>
+                    <p>{{ result }}</p>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+</body>
+
+<style>
+    .el-table .warning-row {
+        background: oldlace;
+    }
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
+    #app{
+        width: 65%;
+        margin :auto;
+    }
+</style>
+
+<script>
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                tableData: [],
+                input: '',
+                result:''
+            }
+        },
+        mounted(){
+            axios.get('/EmpWeb').then(res=>{
+                if(res.data.code){
+                    this.tableData = res.data.data;
+                }
+            });
+        },
+        methods: {
+            handleClick(row) {
+                console.log(row);
+            },
+            sendRequest() {
+                // 确保 input 不为空
+                if (this.input.trim() === '') {
+                    this.$message.error('请输入内容');
+                    return;
+                }
+                // 发送 POST 请求到 /emprequest
+                axios.post('/emprequest', {
+                    data: this.input
+                })
+                    .then(response => {
+                        this.result = response.data; // 更新结果属性
+                        // 处理响应
+                        console.log(response.data);
+                        // 可以在这里添加成功提示
+                        this.$message.success('请求已发送');
+                    })
+                    .catch(error => {
+                        // 处理错误
+                        console.error(error);
+                        // 可以在这里添加错误提示
+                        this.$message.error('请求发送失败');
+                    });
+            }
+        },
+
+    });
+</script>
+</html>
